@@ -1,0 +1,59 @@
+<div class="col-md-offset-4 col-md-4" *ngIf="showForm">
+  <form>
+    <div class="form-group">
+      <input type="text" class="form-control" placeholder="*Hospital Name" name="hospital.hospitalName" [(ngModel)]="hospital.hospitalName">
+    </div>
+    <div class="form-group">
+      <input type="text" class="form-control" placeholder="*Hospital Email" name="hospital.hospitalEmail" [(ngModel)]="hospital.hospitalEmail">
+    </div>
+    <div class="text-center">
+      <button type="button" class="btn btn-primary" (click)="addHospital(hospital)">Add Hospital</button>
+    </div>
+  </form>
+</div>
+
+
+<div class="col-md-offset-2 col-md-8 col-md-offset-2" *ngIf="showForm">
+  <table class="table">
+      <thead>
+        <tr>
+          <th>Hospital Name</th>
+          <th>Hospital Email</th>
+          <th>Branch</th>
+          <th>No of Branches</th>
+          <th>Edit</th>
+          <th>Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let hospital of hospitalLists">
+          <td>{{hospital.hospitalName}}</td>
+          <td>{{hospital.hospitalEmail}}</td>
+          <td><button class="btn btn-warning btn-xs" (click)="manageBranch(hospital._id)">Manage</button>({{hospital.hasBranch}})</td>
+          <td>{{hospital.noOfBranches}}</td>
+          <td><button class="btn btn-primary btn-xs" (click)="editHospital(hospital._id)">Edit</button></td>
+          <td><button class="btn btn-danger btn-xs" (click)="deleteHospital(hospital._id)">Delete</button></td>
+        </tr>
+      </tbody>
+  </table>
+</div>
+
+<!--Edit Hospital-->
+<div class="col-md-offset-4 col-md-4" *ngIf="!showForm">
+  <form>
+    <div class="form-group">
+      <input type="text" class="form-control" placeholder="*New Hospital Name" name="newHospital.newHospitalName" [(ngModel)]="newHospital.newHospitalName">
+    </div>
+    <div class="form-group">
+      <input type="text" class="form-control" placeholder="*New Hospital Email" name="newHospital.newHospitalEmail" [(ngModel)]="newHospital.newHospitalEmail">
+    </div>
+    <div class="form-group" class="hidden">
+      <input type="text" class="form-control" placeholder="*New Hospital Id" name="newHospital.newHospitalId" [(ngModel)]="newHospital.newHospitalId">
+    </div>
+    <div class="text-center">
+      <button type="button" class="btn btn-primary" (click)="updateHospital(newHospital)">Update</button>
+      <button type="button" class="btn btn-danger" (click)="goBack()">Back</button>
+    </div>
+  </form>
+</div>
+<!--Edit Hospital-->
