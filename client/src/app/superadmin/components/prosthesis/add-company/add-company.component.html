@@ -1,0 +1,22 @@
+<!--<div *ngFor="let hobby of hobbies">
+    <label >
+        <input type="checkbox" name="hobbies" [value]="hobby.hobby" 
+        [(ngModel)]="hobby.selected"
+         (change)='consoleHobbies()'>
+        <span>{{hobby.hobby}}</span>
+    </label>
+</div>-->
+<div *ngFor="let hobby of hobbies">
+    <label >
+        <input type="checkbox" name="hobbies" [value]="hobby.hobby" 
+        [(ngModel)]="hobby.selected"
+         >
+        <span>{{hobby.hobby}}</span>
+    </label>
+</div>
+
+<div>
+  <input type="text" name="name" [(ngModel)]="name">
+</div>
+
+<button type="button" class="btn btn-primary" (click)="save()">Save</button>

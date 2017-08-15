@@ -42,24 +42,24 @@ module.exports = (router) => {
     /* ================================================
   MIDDLEWARE - Used to grab user's token from headers
   ================================================ */
-  router.use((req, res, next) => {
-    const token = req.headers['authorization']; // Create token found in headers
-    // Check if token was found in headers
-    if (!token) {
-      res.json({ success: false, message: 'No token provided' }); // Return error
-    } else {
-      // Verify the token is valid
-      jwt.verify(token, config.secret, (err, decoded) => {
-        // Check if error is expired or invalid
-        if (err) {
-          res.json({ success: false, message: 'Token invalid: ' + err }); // Return error for token validation
-        } else {
-          req.decoded = decoded; // Create global variable to use in any request beyond
-          next(); // Exit middleware
-        }
-      });
-    }
-  });
+//   router.use((req, res, next) => {
+//     const token = req.headers['authorization']; // Create token found in headers
+//     // Check if token was found in headers
+//     if (!token) {
+//       res.json({ success: false, message: 'No token provided' }); // Return error
+//     } else {
+//       // Verify the token is valid
+//       jwt.verify(token, config.secret, (err, decoded) => {
+//         // Check if error is expired or invalid
+//         if (err) {
+//           res.json({ success: false, message: 'Token invalid: ' + err }); // Return error for token validation
+//         } else {
+//           req.decoded = decoded; // Create global variable to use in any request beyond
+//           next(); // Exit middleware
+//         }
+//       });
+//     }
+//   });
 
   /**Add new Hospital**/
   router.post('/addHospital',(req,res) => {
@@ -226,6 +226,113 @@ router.get('/getBranches/:id',(req,res)=>{
     }
 });
 
+router.post('/getSingleBranch',(req,res) =>{
+    if(!req.body.hospitalId){
+        res.json({ success:false , message:'No hospital Id provided'});
+    } else {
+        if(!req.body.newBranchId){
+            res.json({ success:false , message:'No branch Id provided'});
+        } else {
+            req.body.hospitalId = mongoose.Types.ObjectId(req.body.hospitalId);
+            req.body.newBranchId = mongoose.Types.ObjectId(req.body.newBranchId);
+            Hospital.findOne({_id:req.body.hospitalId} ,(err,hospital) =>{
+                if(err){
+                    res.json({ success:false , message:'Not a valid hospital Id'});
+                } else {
+                    if(!hospital){
+                        res.json({ success:false , message:'No hospital found!'});
+                    } else {
+                        for(let i=0;i<hospital.branchDetails.length;i++){
+                            if(req.body.newBranchId.equals(hospital.branchDetails[i]._id)){
+                                res.json({ success:true , message:hospital.branchDetails[i]});
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    }
+});
+
+//Update Branch
+router.put('/updateBranch',(req,res)=>{
+    req.body.hospitalId = mongoose.Types.ObjectId(req.body.hospitalId);
+    req.body.newBranchId = mongoose.Types.ObjectId(req.body.newBranchId);
+    
+    if(!req.body.hospitalId){
+        res.json({ success:false , message:'No hospital id provided'});
+    } else {
+        if(!req.body.newBranchId){
+            res.json({ success:false , message:'No branch id provided'});
+        } else {
+            req.body.hospitalId = mongoose.Types.ObjectId(req.body.hospitalId);
+            req.body.newBranchId = mongoose.Types.ObjectId(req.body.newBranchId);
+            Hospital.findOne({_id:req.body.hospitalId},(err,hospital) => {
+                if(err){
+                    res.json({ success:false , message:'Something went wrong!'});
+                } else {
+                    if(!hospital){
+                        res.json({ success:false , message:'Invalid hospital Id'});
+                    } else {
+                        for(let i=0;i<hospital.branchDetails.length;i++){
+                            if(req.body.newBranchId.equals(hospital.branchDetails[i]._id)){
+                                hospital.branchDetails[i].branchName = req.body.newBranchName;
+                                hospital.branchDetails[i].branchEmail = req.body.newBranchEmail;
+                                hospital.save((err) => {
+                                    if(err){
+                                        res.json({ success:false , message:'Something went wrong!'});
+                                    } else {
+                                        res.json({ success:true , message:'Branch updated!'})
+                                    }
+                                });
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    }
+});
+
+//Delete Branch
+router.post('/deleteBranch',(req,res)=>{
+    if(!req.body.hospitalId){
+        res.json({ success:false , message:'No hospital id provided!'});
+    } else {
+        if(!req.body.branchId){
+            res.json({ success:false , message:'No branch Id provided!'});
+        } else {
+            req.body.hospitalId = mongoose.Types.ObjectId(req.body.hospitalId);
+            req.body.branchId = mongoose.Types.ObjectId(req.body.branchId);
+            Hospital.findOne({ _id:req.body.hospitalId } , (err,hospital) =>{
+                if(err){
+                    res.json({ success:false , message:'Not a valid Hospital Id!'});
+                } else {
+                    if(!hospital){
+                        res.json({ success:false , message:'No hospital found!'});
+                    } else {
+                        for(let i=0;i<hospital.branchDetails.length;i++){
+                            if(req.body.branchId.equals(hospital.branchDetails[i]._id)){
+                                hospital.branchDetails.splice(i,1);
+                                hospital.noOfBranches--;
+                                if(hospital.noOfBranches < 1){
+                                    hospital.hasBranch = 'No';
+                                }
+                                hospital.save((err) =>{
+                                    if(err){
+                                        res.json({ success:false , message:err});
+                                    } else {
+                                        res.json({ success:true , message:'Branch deleted'});
+                                    }
+                                });
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    }
+});
 
   return router;
 }

@@ -12,6 +12,8 @@ import { AddBranchComponent } from './components/hospital/add-branch/add-branch.
 
 import { FormsModule } from '@angular/forms'; 
 import { CommonModule } from '@angular/common';
+import { AddCompanyComponent } from './components/prosthesis/add-company/add-company.component';
+import { AddDesignComponent } from './components/prosthesis/add-design/add-design.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +25,9 @@ import { CommonModule } from '@angular/common';
     NavbarComponent,
     DashboardComponent,
     AddHospitalComponent,
-    AddBranchComponent 
+    AddBranchComponent,
+    AddCompanyComponent,
+    AddDesignComponent 
   ],
   imports: [
     AppRoutingModule,

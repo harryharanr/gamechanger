@@ -12,6 +12,9 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { AddHospitalComponent } from './components/hospital/add-hospital/add-hospital.component';
 import { AddBranchComponent } from './components/hospital/add-branch/add-branch.component';
 
+import { AddCompanyComponent } from './components/prosthesis/add-company/add-company.component';
+import { AddDesignComponent } from './components/prosthesis/add-design/add-design.component';
+
 // Our Array of Angular 2 Routes
 const appRoutes: Routes = [
   {
@@ -42,7 +45,17 @@ const appRoutes: Routes = [
       },
       {
         path:'prosthesis',
-        component:ProsthesisComponent
+        component:ProsthesisComponent,
+        children:[
+          {
+            path:'add-company',
+            component:AddCompanyComponent
+          },
+          {
+            path:'add-design',
+            component:AddDesignComponent
+          }
+        ]
       },
       {
         path:'options',

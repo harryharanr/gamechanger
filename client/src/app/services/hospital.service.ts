@@ -70,7 +70,6 @@ export class HospitalService {
   }
 
   updateHospital(hospital){
-      console.log(hospital);
       this.createAuthenticationHeaders(); // Create headers
       return this.http.put(this.domain + 'authentication/updateHospital/' , hospital , this.options).map(res => res.json());
   }
@@ -87,8 +86,25 @@ export class HospitalService {
   }
 
   getBranches(id){
+    console.log(id);
     this.createAuthenticationHeaders(); // Create headers
     return this.http.get(this.domain + 'authentication/getBranches/'+id , this.options).map(res => res.json());
+  }
+
+  getSingleBranch(id){
+    this.createAuthenticationHeaders(); // Create headers
+    return this.http.post(this.domain + 'authentication/getSingleBranch/', id , this.options).map(res => res.json());
+  }
+
+  updateBranch(branch){
+    console.log(branch);
+    this.createAuthenticationHeaders(); // Create headers
+      return this.http.put(this.domain + 'authentication/updateBranch/' ,branch , this.options).map(res => res.json());
+  }
+
+  deleteBranch(id){
+    this.createAuthenticationHeaders(); // Create headers
+    return this.http.post(this.domain + 'authentication/deleteBranch/',id , this.options).map(res => res.json());
   }
 
 }

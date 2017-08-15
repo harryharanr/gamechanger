@@ -13,6 +13,7 @@ export class AddHospitalComponent implements OnInit {
   hospitalToBeUpdated;
 
   showForm = true;
+  showTable = false;
 
   hospital = {
     hospitalName:'',
@@ -45,6 +46,11 @@ export class AddHospitalComponent implements OnInit {
   getHospitals(){
     this.hospitalService.getHospitals().subscribe(data => {
       this.hospitalLists = data.message;
+      if(this.hospitalLists.length < 1){
+        this.showTable = false;
+      } else {
+        this.showTable = true;
+      }
     });
   }
 

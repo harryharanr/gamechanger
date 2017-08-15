@@ -1,84 +1,132 @@
-<div class="col-md-offset-4 col-md-4" *ngIf="selectHospital">
-  <div class="row">
-    <div class="form-group">
-      <label for="sel1">Select Hospital:</label>
-      <select class="form-control" [(ngModel)]="branch.hospitalId" (ngModelChange)="showAddBranchForm(branch.hospitalId)">
-        <option *ngFor="let hospital of hospitalLists" [ngValue]="hospital._id">{{hospital.hospitalName}}</option>
-      </select>
-    </div>
-  </div>
-  <div class="row" *ngIf="showAddBranch">
-    <div class="form-group">
-      <label>Branch Name:</label>
-      <input type="text" class="form-control" [(ngModel)]="branch.branchName">
-    </div>
-    <div class="form-group">
-      <label>Branch E-mail:</label>
-      <input type="text" class="form-control" [(ngModel)]="branch.branchEmail">
-    </div>
-    <div class="text-center">
-      <button class="btn btn-primary" (click)="addBranch(branch)">Add Branch</button>
-    </div>
-    <div>
-        <table class="table">
-          <thead>
-            <tr>
-              <th>Branch Name</th>
-              <th>Branch Email</th>
-              <th>Edit</th>
-              <th>Delete</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let branch of branchLists">
-              <td>{{branch.branchName}}</td>
-              <td>{{branch.branchEmail}}</td>
-              <td><button type="button" class="btn btn-primary btn-xs">Edit</button></td>
-              <td><button type="button" class="btn btn-danger btn-xs">Delete</button></td>
-            </tr>
-          </tbody>
-        </table>
-  </div>
-  </div>
+<div *ngIf="showAddBranchPage">
+    <div class="col-md-offset-4 col-md-4" *ngIf="selectHospital && !showEditForm && !editFromHospital">
+      <div class="row">
+        <div class="form-group">
+          <label for="sel1">Select Hospital:</label>
+          <select class="form-control" [(ngModel)]="branch.hospitalId" (ngModelChange)="showAddBranchForm(branch.hospitalId)">
+            <option *ngFor="let hospital of hospitalLists" [ngValue]="hospital._id">{{hospital.hospitalName}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="row" *ngIf="showAddBranch">
+        <div class="form-group">
+          <label>Branch Name:</label>
+          <input type="text" class="form-control" [(ngModel)]="branch.branchName">
+        </div>
+        <div class="form-group">
+          <label>Branch E-mail:</label>
+          <input type="text" class="form-control" [(ngModel)]="branch.branchEmail">
+        </div>
+        <div class="text-center">
+          <button class="btn btn-primary" (click)="addBranch(branch)">Add Branch</button>
+        </div>
+        <div>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Branch Name</th>
+                  <th>Branch Email</th>
+                  <th>Edit</th>
+                  <th>Delete</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let branch of branchLists">
+                  <td>{{branch.branchName}}</td>
+                  <td>{{branch.branchEmail}}</td>
+                  <td><button type="button" class="btn btn-primary btn-xs" (click)="editBranchFromSelectHospital(branch._id,branch.hospitalId)">Edit</button></td>
+                  <td><button type="button" class="btn btn-danger btn-xs" (click)="deleteBranchFromSelectHospital(branch._id,branch.hospitalId)">Delete</button></td>
+                </tr>
+              </tbody>
+            </table>
+      </div>
+      </div>
 
-  
+      
+    </div>
+
+    <div class="col-md-offset-4 col-md-4" *ngIf="!selectHospital && !showEditForm && !editFromHospital">
+        <h1 class="text-center">{{hospitalName}}</h1>
+        <div class="form-group hidden">
+          <label>Branch ID</label>
+          <input type="text" class="form-control" [(ngModel)]="branch.hospitalId">
+        </div>
+        <div class="form-group">
+          <label>Branch Name:</label>
+          <input type="text" class="form-control" [(ngModel)]="branch.branchName">
+        </div>
+        <div class="form-group">
+          <label>Branch E-mail:</label>
+          <input type="text" class="form-control" [(ngModel)]="branch.branchEmail">
+        </div>
+        <div class="text-center">
+          <button class="btn btn-primary" (click)="addBranch(branch)">Add Branch</button>
+        </div>
+        <div>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Branch Name</th>
+                  <th>Branch Email</th>
+                  <th>Edit</th>
+                  <th>Delete</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let branch of branchLists">
+                  <td>{{branch.branchName}}</td>
+                  <td>{{branch.branchEmail}}</td>
+                  <td><button type="button" class="btn btn-primary btn-xs" (click)="editBranch(branch._id)">Edit</button></td>
+                  <td><button type="button" class="btn btn-danger btn-xs" (click)="deleteBranch(branch._id)">Delete</button></td>
+                </tr>
+              </tbody>
+            </table>
+      </div>
+    </div>
+
+    <div class="col-md-offset-4 col-md-4"  *ngIf="!editFromHospital && showEditForm">
+        <form>
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="*New Branch Name" name="newBranch.newBranchName" [(ngModel)]="newBranch.newBranchName">
+        </div>
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="*New Branch Email" name="newBranch.newBranchEmail" [(ngModel)]="newBranch.newBranchEmail">
+        </div>
+        <div class="form-group">
+          <input type="text" class="form-control hidden" placeholder="*New Branch Id" name="newBranch.newBranchId" [(ngModel)]="newBranch.newBranchId">
+        </div>
+        <div class="form-group">
+          <input type="text" class="form-control hidden" placeholder="*Hospital Id" name="newBranch.hospitalId" [(ngModel)]="newBranch.hospitalId">
+        </div>
+        <div class="text-center">
+          <button type="button" class="btn btn-primary" (click)="updateBranch(newBranch)">Update</button>
+          <button type="button" class="btn btn-danger" (click)="goBack()">Back</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="col-md-offset-4 col-md-4"  *ngIf="editFromHospital && !showEditForm">
+        <form>
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="*New Branch Name" name="newBranchEdit.newBranchName" [(ngModel)]="newBranchEdit.newBranchName">
+        </div>
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="*New Branch Email" name="newBranchEdit.newBranchEmail" [(ngModel)]="newBranchEdit.newBranchEmail">
+        </div>
+        <div class="form-group hidden">
+          <input type="text" class="form-control" placeholder="*New Branch Id" name="newBranchEdit.newBranchId" [(ngModel)]="newBranchEdit.newBranchId">
+        </div>
+        <div class="form-group hidden">
+          <input type="text" class="form-control" placeholder="*Hospital Id" name="newBranchEdit.hospitalId" [(ngModel)]="newBranchEdit.hospitalId">
+        </div>
+        <div class="text-center">
+          <button type="button" class="btn btn-primary" (click)="updateBranchEdit(newBranchEdit)">Update</button>
+          <button type="button" class="btn btn-danger" (click)="goBackFromEdit()">Back</button>
+        </div>
+      </form>
+    </div>
 </div>
 
-<div class="col-md-offset-4 col-md-4" *ngIf="!selectHospital">
-    <h1 class="text-center">{{hospitalName}}</h1>
-    <div class="form-group hidden">
-      <label>Branch ID</label>
-      <input type="text" class="form-control" [(ngModel)]="branch.hospitalId">
-    </div>
-    <div class="form-group">
-      <label>Branch Name:</label>
-      <input type="text" class="form-control" [(ngModel)]="branch.branchName">
-    </div>
-    <div class="form-group">
-      <label>Branch E-mail:</label>
-      <input type="text" class="form-control" [(ngModel)]="branch.branchEmail">
-    </div>
-    <div class="text-center">
-      <button class="btn btn-primary" (click)="addBranch(branch)">Add Branch</button>
-    </div>
-    <div>
-        <table class="table">
-          <thead>
-            <tr>
-              <th>Branch Name</th>
-              <th>Branch Email</th>
-              <th>Edit</th>
-              <th>Delete</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let branch of branchLists">
-              <td>{{branch.branchName}}</td>
-              <td>{{branch.branchEmail}}</td>
-              <td><button type="button" class="btn btn-primary btn-xs">Edit</button></td>
-              <td><button type="button" class="btn btn-danger btn-xs">Delete</button></td>
-            </tr>
-          </tbody>
-        </table>
-  </div>
+<div *ngIf="!showAddBranchPage">
+  <h1 class="text-center">No hospitals present!</h1>
 </div>
