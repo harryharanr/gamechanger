@@ -43,9 +43,16 @@ export class AddHospitalComponent implements OnInit {
     });
   }
 
+  toggleStatus(hospital){
+    this.hospitalService.toggleHospitalStatus(hospital).subscribe(data => {
+      this.getHospitals();
+    });
+  }
+
   getHospitals(){
     this.hospitalService.getHospitals().subscribe(data => {
       this.hospitalLists = data.message;
+            
       if(this.hospitalLists.length < 1){
         this.showTable = false;
       } else {

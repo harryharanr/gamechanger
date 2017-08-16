@@ -28,6 +28,7 @@
           <th>No of Branches</th>
           <th>Edit</th>
           <th>Delete</th>
+          <th>Status</th>
         </tr>
       </thead>
       <tbody>
@@ -38,6 +39,9 @@
           <td>{{hospital.noOfBranches}}</td>
           <td><button class="btn btn-primary btn-xs" (click)="editHospital(hospital._id)">Edit</button></td>
           <td><button class="btn btn-danger btn-xs" (click)="deleteHospital(hospital._id)">Delete</button></td>
+          <td>
+              <button type="button" class="btn btn-default btn-xs" (click)="toggleStatus(hospital)">{{hospital.statusText}}</button>
+          </td>
         </tr>
       </tbody>
   </table>
@@ -62,3 +66,5 @@
   </form>
 </div>
 <!--Edit Hospital-->
+
+

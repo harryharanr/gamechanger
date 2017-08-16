@@ -334,5 +334,37 @@ router.post('/deleteBranch',(req,res)=>{
     }
 });
 
+//toggleHospitalStatus
+router.put('/updateHospitalStatus',(req,res)=>{
+    if(!req.body._id){
+        res.json({ success:false , message:'No id provided!'});
+    } else {
+        Hospital.findOne({ _id:req.body._id },(err,hospital) =>{
+            if(err){
+                res.json({ success:false , message:'Not a valid id!'});
+            } else {
+                if(!hospital){
+                    res.json({ success:false , message:'No hospitals found!'});
+                } else {
+                    if(hospital.active){
+                        hospital.active = false;
+                        hospital.statusText = 'Activate';
+                    } else {
+                        hospital.active = true;
+                        hospital.statusText = 'Deactivate';
+                    }
+                    hospital.save((err) => {
+                        if(err){
+                            res.json({ success:false , message:'Something went wrong!'});
+                        } else {
+                            res.json({ success:true , message:'Status changed!'});
+                        }
+                    });
+                }
+            }
+        });
+    }
+});
+
   return router;
 }

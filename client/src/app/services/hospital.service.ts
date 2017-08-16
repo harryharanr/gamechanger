@@ -107,4 +107,10 @@ export class HospitalService {
     return this.http.post(this.domain + 'authentication/deleteBranch/',id , this.options).map(res => res.json());
   }
 
+  toggleHospitalStatus(hospital){
+    console.log(hospital);
+    this.createAuthenticationHeaders(); // Create headers
+    return this.http.put(this.domain + 'authentication/updateHospitalStatus/' , hospital , this.options).map(res => res.json());
+  }
+
 }
