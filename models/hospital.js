@@ -13,6 +13,10 @@ const hospitalSchema = new Schema({
     branchDetails:[{
         branchName:{type:String ,required:true, unique:true},
         branchEmail:{type:String ,required:true, unique:true}
+    }],
+    hobby:[{
+        hobbyName:{type:String },
+        selected:{type:Boolean , default:false}
     }]
 },{collection:'hospital'});
 

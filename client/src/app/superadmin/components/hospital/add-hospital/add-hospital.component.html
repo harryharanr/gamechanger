@@ -6,6 +6,16 @@
     <div class="form-group">
       <input type="text" class="form-control" placeholder="*Hospital Email" name="hospital.hospitalEmail" [(ngModel)]="hospital.hospitalEmail">
     </div>
+    
+    <div>
+      <label *ngFor="let hobby of hospital.hobbies" class="checkbox-inline">
+          <input type="checkbox" name="hobbies"
+          [(ngModel)]="hobby.selected"
+          >
+          {{hobby.hobbyName}}
+      </label>
+    </div>
+    
     <div class="text-center">
       <button type="button" class="btn btn-primary" (click)="addHospital(hospital)">Add Hospital</button>
     </div>
@@ -19,7 +29,7 @@
 </div>
 
 <div class="col-md-offset-2 col-md-8 col-md-offset-2" *ngIf="showForm && showTable">
-  <table class="table">
+  <!--<table class="table">
       <thead>
         <tr>
           <th>Hospital Name</th>
@@ -44,7 +54,7 @@
           </td>
         </tr>
       </tbody>
-  </table>
+  </table>-->
 </div>
 
 <!--Edit Hospital-->

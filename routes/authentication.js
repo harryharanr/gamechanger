@@ -42,37 +42,48 @@ module.exports = (router) => {
     /* ================================================
   MIDDLEWARE - Used to grab user's token from headers
   ================================================ */
-//   router.use((req, res, next) => {
-//     const token = req.headers['authorization']; // Create token found in headers
-//     // Check if token was found in headers
-//     if (!token) {
-//       res.json({ success: false, message: 'No token provided' }); // Return error
-//     } else {
-//       // Verify the token is valid
-//       jwt.verify(token, config.secret, (err, decoded) => {
-//         // Check if error is expired or invalid
-//         if (err) {
-//           res.json({ success: false, message: 'Token invalid: ' + err }); // Return error for token validation
-//         } else {
-//           req.decoded = decoded; // Create global variable to use in any request beyond
-//           next(); // Exit middleware
-//         }
-//       });
-//     }
-//   });
+  router.use((req, res, next) => {
+    const token = req.headers['authorization']; // Create token found in headers
+    // Check if token was found in headers
+    if (!token) {
+      res.json({ success: false, message: 'No token provided' }); // Return error
+    } else {
+      // Verify the token is valid
+      jwt.verify(token, config.secret, (err, decoded) => {
+        // Check if error is expired or invalid
+        if (err) {
+          res.json({ success: false, message: 'Token invalid: ' + err }); // Return error for token validation
+        } else {
+          req.decoded = decoded; // Create global variable to use in any request beyond
+          next(); // Exit middleware
+        }
+      });
+    }
+  });
 
   /**Add new Hospital**/
   router.post('/addHospital',(req,res) => {
+     console.log(req.body);
      if(!req.body.hospitalName){
         res.json({ success:false , message:'No hospital Name Provided'});
      } else {
          if(!req.body.hospitalEmail){
             res.json({ success:false , message:'No E-mail Id Provided'});
          } else {
-             const hospital = new Hospital({
-                 hospitalName:req.body.hospitalName,
-                 hospitalEmail:req.body.hospitalEmail
-             });
+            //  const hospital = new Hospital({
+            //      hospitalName:req.body.hospitalName,
+            //      hospitalEmail:req.body.hospitalEmail
+            //  });
+            const hospital = new Hospital();
+            hospital.hospitalName = req.body.hospitalName;
+            hospital.hospitalEmail = req.body.hospitalEmail;
+             //hospital.hospitalName = 'Fixed Name';
+             //console.log(req.body.hobbies.length);
+             for(let i=0;i<req.body.hobbies.length;i++){
+                 console.log(req.body.hobbies[i]);
+                 hospital.hobby[i] = req.body.hobbies[i];
+                //hospital.hobby[i].hobbyName = req.body.hobbies[i].hobby
+             }
 
              hospital.save((err) => {
                 if(err){

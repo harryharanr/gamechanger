@@ -17,7 +17,11 @@ export class AddHospitalComponent implements OnInit {
 
   hospital = {
     hospitalName:'',
-    hospitalEmail:''
+    hospitalEmail:'',
+    hobbies: [{
+        'hobbyName': String,
+        'selected': Boolean,
+    }]
   }
 
   newHospital = {
@@ -26,19 +30,37 @@ export class AddHospitalComponent implements OnInit {
     newHospitalId:''
   }
 
+  hobbies: any= [
+    {'hobbyName': 'Sport', 'selected': false},
+    {'hobbyName': 'Music', 'selected': false},
+    {'hobbyName': 'Reading', 'selected': false},
+    {'hobbyName': 'Travelling', 'selected': false},
+    {'hobbyName': 'Movies', 'selected': false}
+];
+
   constructor(
     private hospitalService:HospitalService,
     private router:Router
   ) { }
 
   addHospital(hospital){
+    console.log(hospital);
     this.hospitalService.addHospital(hospital).subscribe(data => {
+        console.log(data.message);
         if(data.success){
           this.getHospitals();
+          
+          this.hospital.hospitalName = '';
+          this.hospital.hospitalEmail = '';
           this.hospital = {
-              hospitalName:'',
-              hospitalEmail:''
+              hospitalName:null,
+              hospitalEmail:null,
+              hobbies:[{
+                'hobbyName': String,
+                'selected': null
+              }]
           }
+          
         }
     });
   }
@@ -94,6 +116,7 @@ export class AddHospitalComponent implements OnInit {
 
   ngOnInit() {
     this.getHospitals();
+    this.hospital.hobbies = this.hobbies;
   }
 
 }
