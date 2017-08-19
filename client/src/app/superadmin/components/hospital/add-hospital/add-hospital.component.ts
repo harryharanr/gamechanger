@@ -35,7 +35,8 @@ export class AddHospitalComponent implements OnInit {
     {'hobbyName': 'Music', 'selected': false},
     {'hobbyName': 'Reading', 'selected': false},
     {'hobbyName': 'Travelling', 'selected': false},
-    {'hobbyName': 'Movies', 'selected': false}
+    {'hobbyName': 'Movies', 'selected': false},
+    {'hobbyName': 'Working out', 'selected': false}
 ];
 
   constructor(
